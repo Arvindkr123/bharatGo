@@ -36,7 +36,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="p-3 sm:py-5 sm:px-8 bg-white flex justify-between shadow">
+    <div className="sticky top-0 p-3 sm:py-5 sm:px-8 bg-white flex justify-between shadow">
       <div className="left flex gap-x-3 items-center">
         <h1 className="hidden sm:block font-mono text-xl">Shopi</h1>
         {navLinks.map((link) => (
