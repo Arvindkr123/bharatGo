@@ -21,7 +21,7 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route
-          path="/"
+          path="/home"
           element={
             <ProtectRoute>
               <Layout>

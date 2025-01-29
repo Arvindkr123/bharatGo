@@ -3,10 +3,13 @@
 const SingleProductDetails = ({ singleProduct = {}, setShowSingleProduct }) => {
   console.log(singleProduct);
   return (
-    <aside className="w-[300px] sm:w-[400px] h-full flex flex-col fixed bg-white top-[48px] sm:top-[66px] right-0 border border-black rounded-lg fade-enter-done">
+    <aside className="w-[300px] sm:w-[400px] h-full flex flex-col fixed bg-white top-[50px] sm:top-[80px] right-0 border border-black rounded-lg fade-enter-done">
       <div className="flex justify-between  items-center p-6">
         <h2 className="font-medium text-xl ">Detail</h2>{" "}
-        <div onClick={() => setShowSingleProduct(false)}>
+        <div
+          className="p-2 bg-black text-white rounded"
+          onClick={() => setShowSingleProduct(false)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -24,7 +27,7 @@ const SingleProductDetails = ({ singleProduct = {}, setShowSingleProduct }) => {
       </div>
       <div className="flex flex-col items-center gap-4 ">
         <img
-          className=" w-4/5 h-full rounded-lg"
+          className="w-4/5 h-full rounded-lg"
           src={singleProduct.images[0] || "https://i.imgur.com/cHddUCu.jpeg"}
         />
         <p className="flex flex-col items-center p-4">
@@ -32,7 +35,7 @@ const SingleProductDetails = ({ singleProduct = {}, setShowSingleProduct }) => {
             ${singleProduct?.price}
           </span>
           <span className=" font-medium text-md">{singleProduct?.title}</span>
-          <span className=" font-light text-sm">
+          <span className="font-light text-sm text-clip">
             {singleProduct?.description}
           </span>
         </p>
