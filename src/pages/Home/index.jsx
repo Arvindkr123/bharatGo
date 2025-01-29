@@ -4,12 +4,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import SingleProductDetails from "../../components/SingleProductDetails";
+import useGetProducts from "../../hooks/useGetProducts";
 
 const Home = () => {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showSingleProduct, setShowSingleProduct] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { loading, products } = useGetProducts();
 
   const fetchCurrentUserDetails = async (user) => {
     try {
@@ -22,8 +25,6 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error fetching user details:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -41,7 +42,7 @@ const Home = () => {
       }
     );
 
-    return () => unsubscribe(); // Cleanup the listener on unmount
+    return () => unsubscribe();
   }, [navigate]);
 
   const logoutHandler = async () => {
@@ -51,6 +52,18 @@ const Home = () => {
     } catch (error) {
       console.error("Error during logout:", error);
     }
+  };
+
+  const handleSearchChange = (e) =>
+    setSearchQuery(e.target.value.toLowerCase());
+
+  const filteredProducts = products?.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery)
+  );
+
+  const showSingleProductDetailsHandler = (product) => {
+    setSelectedProduct(product);
+    setShowSingleProduct(true);
   };
 
   if (loading) {
@@ -69,25 +82,27 @@ const Home = () => {
           type="text"
           className="w-[200px] mx-auto px-3 py-3 outline-none border hover:border-1 rounded"
           placeholder="Search a product"
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
-        <div className="cards grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]?.map((item) => (
+        <div className="cards grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+          {filteredProducts?.map((item) => (
             <motion.div
-              key={item}
+              key={item?.id}
               initial={{ x: "10%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ type: "tween", stiffness: 50, damping: 20 }}
             >
-              <div className="Card bg-white cursor-pointer w-56 h-60 rounded-lg  active:scale-110 transition ease duration-75">
+              <div className="Card bg-white cursor-pointer w-56 h-60 rounded-lg active:scale-110 transition ease duration-75">
                 <figure className="relative mb-2 w-full h-4/5">
                   <span className="absolute bottom-0 left-0 bg-white/60 rounded-lg text-black text-sm m-1 px-2">
-                    Clothes
+                    {item?.category?.name}
                   </span>
                   <img
-                    onClick={() => setShowSingleProduct(true)}
+                    onClick={() => showSingleProductDetailsHandler(item)}
                     className="w-full h-full object-cover rounded-lg"
-                    src="https://i.imgur.com/1twoaDy.jpeg"
-                    alt="Classic Red Pullover Hoodie"
+                    src={item.images[0] || "https://i.imgur.com/1twoaDy.jpeg"}
+                    alt={item?.title || "Product Image"}
                   />
                   <button className="absolute m-2 top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full">
                     <svg
@@ -95,7 +110,7 @@ const Home = () => {
                       viewBox="0 0 24 24"
                       fill="currentColor"
                       aria-hidden="true"
-                      className="h-6 w-6 text-black-500s"
+                      className="h-6 w-6 text-black"
                     >
                       <path
                         fillRule="evenodd"
@@ -106,19 +121,19 @@ const Home = () => {
                   </button>
                 </figure>
                 <p className="flex justify-between">
-                  <span className="text-sm font-light">
-                    {" "}
-                    Classic Red Pullover Hoodie
-                  </span>
-                  <span className="text-lg font-medium"> 10$</span>
+                  <span className="text-sm font-light">{item?.title}</span>
+                  <span className="text-lg font-medium">{item?.price}$</span>
                 </p>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
-      {showSingleProduct && (
-        <SingleProductDetails setShowSingleProduct={setShowSingleProduct} />
+      {showSingleProduct && selectedProduct && (
+        <SingleProductDetails
+          singleProduct={selectedProduct}
+          setShowSingleProduct={setShowSingleProduct}
+        />
       )}
     </>
   );

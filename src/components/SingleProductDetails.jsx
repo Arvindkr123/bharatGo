@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 
-const SingleProductDetails = ({ setShowSingleProduct }) => {
+const SingleProductDetails = ({ singleProduct = {}, setShowSingleProduct }) => {
+  console.log(singleProduct);
   return (
-    <aside className="w-[400px] h-full flex flex-col fixed bg-white top-[48px] sm:top-[66px] right-0 border border-black rounded-lg fade-enter-done">
+    <aside className="w-[300px] sm:w-[400px] h-full flex flex-col fixed bg-white top-[48px] sm:top-[66px] right-0 border border-black rounded-lg fade-enter-done">
       <div className="flex justify-between  items-center p-6">
         <h2 className="font-medium text-xl ">Detail</h2>{" "}
         <div onClick={() => setShowSingleProduct(false)}>
@@ -24,19 +25,15 @@ const SingleProductDetails = ({ setShowSingleProduct }) => {
       <div className="flex flex-col items-center gap-4 ">
         <img
           className=" w-4/5 h-full rounded-lg"
-          src="https://i.imgur.com/cHddUCu.jpeg"
+          src={singleProduct.images[0] || "https://i.imgur.com/cHddUCu.jpeg"}
         />
         <p className="flex flex-col items-center p-4">
-          <span className=" font-medium text-2xl mb-4">$69</span>
-          <span className=" font-medium text-md">
-            $Classic Heather Gray Hoodie
+          <span className=" font-medium text-2xl mb-4">
+            ${singleProduct?.price}
           </span>
+          <span className=" font-medium text-md">{singleProduct?.title}</span>
           <span className=" font-light text-sm">
-            $Stay cozy and stylish with our Classic Heather Gray Hoodie. Crafted
-            from soft, durable fabric, it features a kangaroo pocket, adjustable
-            drawstring hood, and ribbed cuffs. Perfect for a casual day out or a
-            relaxing evening in, this hoodie is a versatile addition to any
-            wardrobe.
+            {singleProduct?.description}
           </span>
         </p>
       </div>
