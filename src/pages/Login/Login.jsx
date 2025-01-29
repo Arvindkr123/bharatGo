@@ -1,25 +1,56 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase.config";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
-    name: "",
     password: "",
-    role: "admin", // Default value as per the object
-    avatar: "", // Allow user to add an avatar URL
   });
+
+  const navigate = useNavigate();
+  const [formErrors, setFormErrors] = useState({ email: "", password: "" });
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setFormErrors((prev) => ({ ...prev, [name]: "" }));
+    setErrorMessage(""); // Clear global error
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
-    // Add your submission logic here
+    const errors = {};
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required!";
+    }
+    if (!formData.password.trim()) {
+      errors.password = "Password is required!";
+    } else if (formData.password.length < 6) {
+      errors.password = "Password must be at least 6 characters!";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+
+      // console.log(response.user);
+      setSuccessMessage("Login successful!");
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(
+        error.message || "Something went wrong. Please try again."
+      );
+    }
   };
 
   return (
@@ -32,9 +63,17 @@ const Login = () => {
       >
         <form onSubmit={handleSubmit} className="p-5">
           <h3 className="text-xl font-semibold mb-4 text-center">
-            Welcome Back
+            Welcome Back to BharatGo
           </h3>
-          <p className="text-xl mb-4 text-center">Please Login</p>
+          <p className="text-xl mb-4 text-center">
+            Please enter your credentials
+          </p>
+          {successMessage && (
+            <p className="mb-4 text-green-500 text-center">{successMessage}</p>
+          )}
+          {errorMessage && (
+            <p className="mb-4 text-red-500 text-center">{errorMessage}</p>
+          )}
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-gray-700"
@@ -50,8 +89,10 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your email"
               className="w-full p-2 mt-1 border rounded-lg focus:ring-2 focus:ring-blue-400"
-              required
             />
+            {formErrors.email && (
+              <p className="mt-1 text-red-500">{formErrors.email}</p>
+            )}
           </div>
 
           <div className="mb-4">
@@ -69,20 +110,22 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your password"
               className="w-full p-2 mt-1 border rounded-lg focus:ring-2 focus:ring-blue-400"
-              required
             />
+            {formErrors.password && (
+              <p className="mt-1 text-red-500">{formErrors.password}</p>
+            )}
           </div>
 
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
           >
-            Signup
+            Login
           </button>
           <p className="mt-4 text-center text-gray-500 text-xl">
-            Do not have an account ?{" "}
+            Do not have an account ?
             <Link className="text-blue-500 hover:text-blue-700" to="/register">
-              Signup here
+              Signup
             </Link>
           </p>
         </form>
