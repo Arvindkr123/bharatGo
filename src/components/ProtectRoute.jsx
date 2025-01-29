@@ -1,17 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
 import useGetUserDetails from "../hooks/useGetUserDetails";
+import Loader from "./Loader";
 
 const ProtectRoute = ({ children }) => {
   const { user, loading, error } = useGetUserDetails();
   //   console.log(user);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>Loading...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error || !user) {

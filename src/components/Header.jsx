@@ -5,12 +5,16 @@ import { FaBoxArchive } from "react-icons/fa6";
 import { MdAccountBox } from "react-icons/md";
 import { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
+import useGetUserDetails from "../hooks/useGetUserDetails";
+import { auth } from "../firebase.config";
 
 const Header = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const { user } = useGetUserDetails();
 
   const isActive = (route) => pathname.includes(route);
 
@@ -35,6 +39,10 @@ const Header = () => {
     { label: "Toys", path: "/toys" },
   ];
 
+  const logoutHandler = async () => {
+    await auth.signOut();
+  };
+
   return (
     <div className="sticky top-0 p-3 z-40 sm:py-5 sm:px-8 bg-white flex justify-between shadow">
       <div className="left flex gap-x-3 items-center">
@@ -53,7 +61,7 @@ const Header = () => {
       </div>
 
       <div className="hidden right md:flex gap-x-3 items-center">
-        <h1>arvind@gmail.com</h1>
+        <h1>{user?.email}</h1>
         <Link
           className={clsx("text-sm font-normal", {
             "border-b-2": isActive("/myOrders"),
@@ -71,6 +79,12 @@ const Header = () => {
           My Account
         </Link>
         <p className="text-sm font-normal cursor-pointer">🛒 0</p>
+        <button
+          onClick={logoutHandler}
+          className="p-2 bg-gray-600 text-white cursor-pointer hover:bg-gray-500 transition-all ease-in rounded"
+        >
+          Logout
+        </button>
       </div>
 
       <div className="md:hidden inline-flex items-center justify-center cursor-pointer bg-white text-black relative">
@@ -85,7 +99,7 @@ const Header = () => {
           >
             <p className="flex items-center gap-1 bg-gray-500 hover:bg-gray-600 text-white p-1">
               <FaUser />
-              <span>arvindkr10@gmail.com</span>
+              <span>{user?.email}</span>
             </p>
             <p
               onClick={() => navigate("/myOrders")}
@@ -105,6 +119,12 @@ const Header = () => {
               <BiSolidCart />
               <span>5</span>
             </p>
+            <button
+              onClick={logoutHandler}
+              className="p-2 bg-blue-600 text-white cursor-pointer hover:bg-blue-500 transition-all ease-in rounded"
+            >
+              Logout
+            </button>
           </div>
         )}
       </div>
