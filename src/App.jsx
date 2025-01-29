@@ -3,6 +3,7 @@ import Register from "./pages/register/Register";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home";
 import Layout from "./components/Layout";
+import ProtectRoute from "./components/ProtectRoute";
 
 function App() {
   return (
@@ -12,9 +13,11 @@ function App() {
           <Route
             path="/"
             element={
-              <Layout>
-                <Home />
-              </Layout>
+              <ProtectRoute>
+                <Layout>
+                  <Home />
+                </Layout>
+              </ProtectRoute>
             }
           />
           <Route path="/register" element={<Register />} />

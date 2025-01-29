@@ -1,58 +1,22 @@
-import { useState, useEffect } from "react";
-import { auth, firebaseDb } from "./../../firebase.config";
-import { doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import SingleProductDetails from "../../components/SingleProductDetails";
 import useGetProducts from "../../hooks/useGetProducts";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [userDetails, setUserDetails] = useState(null);
   const [showSingleProduct, setShowSingleProduct] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { loading, products } = useGetProducts();
 
-  const fetchCurrentUserDetails = async (user) => {
-    try {
-      const docRef = doc(firebaseDb, "Users", user?.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data());
-      } else {
-        console.log("User not exists in Firestore");
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(
-      (user) => {
-        if (user) {
-          fetchCurrentUserDetails(user);
-        } else {
-          navigate("/login");
-        }
-      },
-      (error) => {
-        console.error("Auth state listener error:", error);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [navigate]);
-
-  const logoutHandler = async () => {
-    try {
-      await auth.signOut();
-      navigate("/login");
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
+  // const logoutHandler = async () => {
+  //   try {
+  //     await auth.signOut();
+  //     navigate("/login");
+  //   } catch (error) {
+  //     console.error("Error during logout:", error);
+  //   }
+  // };
 
   const handleSearchChange = (e) =>
     setSearchQuery(e.target.value.toLowerCase());
