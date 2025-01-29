@@ -10,6 +10,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    avatar: "",
   });
 
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    avatar: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -37,6 +39,9 @@ const Register = () => {
     }
     if (!formData.email.trim()) {
       errors.email = "Email is required!";
+    }
+    if (!formData.avatar.trim()) {
+      errors.avatar = "Avatar url is required!";
     }
     if (!formData.password.trim()) {
       errors.password = "Password is required!";
@@ -63,6 +68,8 @@ const Register = () => {
         await setDoc(doc(firebaseDb, "Users", user.uid), {
           email: formData.email,
           name: formData.name,
+          avatar: formData.avatar,
+          role: "customer",
         });
       }
 
@@ -156,6 +163,24 @@ const Register = () => {
             {formErrors.password && (
               <p className="mt-1 text-red-500">{formErrors.password}</p>
             )}
+          </div>
+
+          <div className="mb-4">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="avatar"
+            >
+              Avatar URL
+            </label>
+            <input
+              type="url"
+              id="avatar"
+              name="avatar"
+              value={formData.avatar}
+              onChange={handleChange}
+              placeholder="Enter avatar URL"
+              className="w-full p-2 mt-1 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            />
           </div>
 
           <button
