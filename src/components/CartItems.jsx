@@ -1,7 +1,21 @@
 import useCartContext from "../hooks/useCartContext";
 
 const CartItems = () => {
-  const { closeShowCartHandler } = useCartContext();
+  const {
+    closeShowCartHandler,
+    cartItems,
+    calculateTotalPrice,
+    addCartFromContextHandler,
+    removeCartItemQuantityFromContextHandler,
+    removeSingleItemInCart,
+  } = useCartContext();
+
+  const increaseQuantityHandler = (item) => {
+    addCartFromContextHandler(item);
+  };
+  const decreaseQuantityHandler = (item) => {
+    removeCartItemQuantityFromContextHandler(item);
+  };
 
   return (
     <div className="w-[300px] sm:w-[400px] h-full flex flex-col fixed bg-white top-[50px] sm:top-[80px] right-0 border border-black rounded-lg z-50">
@@ -27,23 +41,24 @@ const CartItems = () => {
         </div>
       </div>
       <main className="overflow-y-auto flex-1 pb-20">
-        {Array.from({ length: 10 }).map((_, index) => (
+        {cartItems?.map((cartItem, index) => (
           <div
             key={index}
             className="single-cartItem flex p-3 items-center gap-3 border-b border-b-gray-200"
           >
             <img
               className="w-20 h-20 rounded-md"
-              src="https://i.imgur.com/mp3rUty.jpeg"
+              src={cartItem.images[0] || "https://i.imgur.com/mp3rUty.jpeg"}
               alt="cart item"
             />
             <div className="flex-1">
-              <p className="text-sm">
-                Sleek Wireless Headphone & Inked Earbud Set
-              </p>
-              <p className="font-medium">$44</p>
+              <p className="text-sm">{cartItem?.title}</p>
+              <p className="font-medium">${cartItem?.price}</p>
               <div className="flex items-center gap-3 mt-2">
-                <button className="bg-red-200 rounded-lg p-1 w-8 h-8 flex justify-center items-center">
+                <button
+                  onClick={() => decreaseQuantityHandler(cartItem)}
+                  className="cursor-pointer  bg-red-200 rounded-lg p-1 w-8 h-8 flex justify-center items-center"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -58,9 +73,12 @@ const CartItems = () => {
                   </svg>
                 </button>
                 <div className="bg-gray-300 w-10 flex justify-center rounded-md">
-                  <p className="select-none">1</p>
+                  <p className="select-none">{cartItem?.qty}</p>
                 </div>
-                <button className="bg-green-200 rounded-lg p-1 w-8 h-8 flex justify-center items-center">
+                <button
+                  onClick={() => increaseQuantityHandler(cartItem)}
+                  className="cursor-pointer bg-green-200 rounded-lg p-1 w-8 h-8 flex justify-center items-center"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -76,7 +94,10 @@ const CartItems = () => {
                 </button>
               </div>
             </div>
-            <button className="bg-black text-white rounded p-1">
+            <button
+              onClick={() => removeSingleItemInCart(cartItem)}
+              className="bg-black text-white rounded p-1"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -96,7 +117,7 @@ const CartItems = () => {
       <div className="w-full sm:w-[400px] border-t bg-white sticky bottom-0 p-3">
         <div className="flex justify-between mb-3">
           <p className="font-bold">Total</p>
-          <p className="font-bold">$0</p>
+          <p className="font-bold">${calculateTotalPrice()}</p>
         </div>
         <button className="w-full rounded bg-black text-white p-2 hover:bg-black/90">
           Checkout

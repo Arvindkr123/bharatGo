@@ -45,7 +45,7 @@ const Header = () => {
     await auth.signOut();
   };
 
-  const { showCart, openShowCartHandler } = useCartContext();
+  const { showCart, openShowCartHandler, cartItems } = useCartContext();
 
   return (
     <>
@@ -92,7 +92,7 @@ const Header = () => {
             onClick={() => openShowCartHandler()}
             className="text-sm font-normal cursor-pointer"
           >
-            🛒 0
+            🛒 {cartItems?.length || 0}
           </p>
           <button
             onClick={logoutHandler}
@@ -135,7 +135,7 @@ const Header = () => {
                 className="flex items-center gap-1 bg-gray-500 hover:bg-gray-600 text-white p-1 cursor-pointer"
               >
                 <BiSolidCart />
-                <span>5</span>
+                <span> {cartItems?.length || 0}</span>
               </p>
               <button
                 onClick={logoutHandler}

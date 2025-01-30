@@ -2,12 +2,18 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import SingleProductDetails from "../../components/SingleProductDetails";
 import useGetProducts from "../../hooks/useGetProducts";
+import useCartContext from "./../../hooks/useCartContext";
 
 const Home = () => {
   const [showSingleProduct, setShowSingleProduct] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { loading, products } = useGetProducts();
+  const {
+    openShowCartHandler,
+    addCartFromContextHandler,
+    checkExistedItemInCart,
+  } = useCartContext();
 
   const handleSearchChange = (e) =>
     setSearchQuery(e.target.value.toLowerCase());
@@ -28,6 +34,14 @@ const Home = () => {
       </div>
     );
   }
+
+  const addCartItemHandler = (e, item) => {
+    e.preventDefault();
+    openShowCartHandler();
+    addCartFromContextHandler(item);
+    // console.log(e);
+    // console.log(item);
+  };
 
   return (
     <>
@@ -59,21 +73,50 @@ const Home = () => {
                     src={item.images[0] || "https://i.imgur.com/1twoaDy.jpeg"}
                     alt={item?.title || "Product Image"}
                   />
-                  <button className="absolute m-2 top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      className="h-6 w-6 text-black"
+
+                  {checkExistedItemInCart(item) ? (
+                    <button
+                      aria-label="Item in Cart"
+                      className="absolute m-2 top-0 right-0 flex justify-center items-center bg-black w-6 h-6 rounded-full"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        className="h-6 w-6 text-stone-100 p-1"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent unwanted event bubbling
+                        addCartItemHandler(e, item);
+                      }}
+                      aria-label="Add to Cart"
+                      className="cursor-pointer absolute m-2 top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        className="h-6 w-6 text-black"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </figure>
                 <p className="flex justify-between">
                   <span className="text-sm font-light">{item?.title}</span>
