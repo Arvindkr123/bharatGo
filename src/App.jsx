@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectRoute from "./components/ProtectRoute";
 
@@ -106,9 +106,6 @@ function App() {
         {/* Public Routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
-        {/* Default Route */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* 404 Page */}
         <Route path="*" element={<NotFoundPage />} />

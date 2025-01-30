@@ -7,7 +7,7 @@ import CartContextProvider from "./context/CartItems.Context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter basename="/https://bharat-go-upce.vercel.app/home/">
+    <BrowserRouter>
       <CartContextProvider>
         <App />
       </CartContextProvider>
