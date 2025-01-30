@@ -74,7 +74,7 @@ const Register = () => {
       }
 
       setSuccessMessage("Registration successful! Please log in.");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       setErrorMessage(
         error.message || "Something went wrong. Please try again."

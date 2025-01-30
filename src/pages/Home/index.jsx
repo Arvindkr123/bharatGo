@@ -9,15 +9,6 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { loading, products } = useGetProducts();
 
-  // const logoutHandler = async () => {
-  //   try {
-  //     await auth.signOut();
-  //     navigate("/login");
-  //   } catch (error) {
-  //     console.error("Error during logout:", error);
-  //   }
-  // };
-
   const handleSearchChange = (e) =>
     setSearchQuery(e.target.value.toLowerCase());
 

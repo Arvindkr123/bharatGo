@@ -45,7 +45,7 @@ const Login = () => {
 
       // console.log(response.user);
       setSuccessMessage("Login successful!");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       setErrorMessage(
         error.message || "Something went wrong. Please try again."
