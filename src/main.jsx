@@ -7,7 +7,7 @@ import CartContextProvider from "./context/CartItems.Context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/home">
       <CartContextProvider>
         <App />
       </CartContextProvider>
