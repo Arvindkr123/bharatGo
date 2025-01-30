@@ -53,6 +53,24 @@ const Login = () => {
     }
   };
 
+  const loginAsGuestUser = async () => {
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        "pawan@gmail.com",
+        "pawan@gmail.com"
+      );
+
+      // console.log(response.user);
+      setSuccessMessage("Login successful!");
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(
+        error.message || "Something went wrong. Please try again."
+      );
+    }
+  };
+
   return (
     <div className="grid items-center justify-center h-screen bg-gradient-to-l to-[#eeaeca] from-[#94bbe9]">
       <motion.div
@@ -118,7 +136,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition cursor-pointer"
           >
             Login
           </button>
@@ -127,6 +145,15 @@ const Login = () => {
             <Link className="text-blue-500 hover:text-blue-700" to="/register">
               Signup
             </Link>
+          </p>
+          <p className="mt-4 text-center text-gray-500 text-xl">
+            Login as
+            <button
+              onClick={() => loginAsGuestUser()}
+              className="text-blue-500 hover:text-blue-700 ml-2 cursor-pointer"
+            >
+              Guest User
+            </button>
           </p>
         </form>
       </motion.div>
