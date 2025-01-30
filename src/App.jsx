@@ -1,26 +1,27 @@
 import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectRoute from "./components/ProtectRoute";
 
-// Lazy-loaded components for better performance
+// Lazy-loaded components
 const Register = lazy(() => import("./pages/register/Register"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const Home = lazy(() => import("./pages/Home"));
-import MyAccount from "./pages/myaccount/index";
-import MyOrder from "./pages/myorder/index";
-import Toys from "./pages/toys/Toys";
-import Furnitures from "./pages/furnitures/index";
-import Electronics from "./pages/elctronics/index";
-import Clothes from "./pages/clothes/index";
-import Loader from "./components/Loader";
-import NotFoundPage from "./components/NotFound";
-import SingleOrder from "./pages/myorder/SingleOrder";
+const MyAccount = lazy(() => import("./pages/myaccount/index"));
+const MyOrder = lazy(() => import("./pages/myorder/index"));
+const Toys = lazy(() => import("./pages/toys/Toys"));
+const Furnitures = lazy(() => import("./pages/furnitures/index"));
+const Electronics = lazy(() => import("./pages/elctronics/index"));
+const Clothes = lazy(() => import("./pages/clothes/index"));
+const Loader = lazy(() => import("./components/Loader"));
+const NotFoundPage = lazy(() => import("./components/NotFound"));
+const SingleOrder = lazy(() => import("./pages/myorder/SingleOrder"));
 
 function App() {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
+        {/* Protected Routes */}
         <Route
           path="/home"
           element={
@@ -105,7 +106,11 @@ function App() {
         {/* Public Routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        {/* Fallback for undefined routes */}
+
+        {/* Default Route */}
+        <Route path="/" element={<Navigate to="/home" replace />} />
+
+        {/* 404 Page */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>

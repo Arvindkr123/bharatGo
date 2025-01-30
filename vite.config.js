@@ -9,5 +9,8 @@ export default defineConfig({
     tailwindcss()
 
   ],
-  base: "/home"
+  base: "/home",
+  server: {
+    historyApiFallback: true, // Fallback to index.html
+  },
 })
