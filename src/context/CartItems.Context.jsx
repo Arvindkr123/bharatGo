@@ -7,6 +7,21 @@ const CartContextProvider = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
   const [cartItems, setCartItems] = useState([]);
 
+  const [userOrders, setUserOrders] = useState([]);
+
+  const addOrder = useCallback((currentDate, totalProductPrice, cartItems) => {
+    // console.log(currentDate, totalProductPrice, cartItems);
+    setUserOrders((prevOrders) => [
+      ...prevOrders,
+      {
+        currentDate,
+        products: cartItems.length,
+        totalProductPrice,
+        cartItems,
+      },
+    ]);
+  }, []);
+
   const checkExistedItemInCart = useCallback(
     (item) => cartItems.some((c) => c.id === item.id),
     [cartItems]
@@ -73,6 +88,7 @@ const CartContextProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         showCart,
+        setCartItems,
         openShowCartHandler,
         closeShowCartHandler,
         addCartFromContextHandler,
@@ -81,6 +97,8 @@ const CartContextProvider = ({ children }) => {
         removeCartItemQuantityFromContextHandler,
         checkExistedItemInCart,
         removeSingleItemInCart,
+        userOrders,
+        addOrder,
       }}
     >
       {children}
