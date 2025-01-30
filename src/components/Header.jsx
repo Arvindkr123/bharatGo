@@ -18,7 +18,7 @@ const Header = () => {
 
   const { user } = useGetUserDetails();
 
-  const isActive = (route) => pathname.includes(route);
+  const isActive = (route) => pathname === route; // Exact match for active route
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -34,7 +34,7 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { label: "All", path: "/home" },
+    { label: "All", path: "/" },
     { label: "Clothes", path: "/clothes" },
     { label: "Electronics", path: "/electronics" },
     { label: "Furnitures", path: "/furnitures" },
@@ -52,7 +52,7 @@ const Header = () => {
       <div className="sticky top-0 p-3 z-40 sm:py-5 sm:px-8 bg-white flex justify-between shadow">
         <div className="left flex gap-x-3 items-center">
           <h1
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/")}
             className="hidden sm:block font-mono text-xl cursor-pointer"
           >
             Shopi
