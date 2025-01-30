@@ -57,9 +57,10 @@ const Clothes = () => {
                   <img
                     onClick={() => showSingleProductDetailsHandler(item)}
                     className="w-full h-full object-cover rounded-lg"
-                    src={item.images[2] || "https://i.imgur.com/1twoaDy.jpeg"}
+                    src={item.images[0] || "https://i.imgur.com/1twoaDy.jpeg"}
                     alt={item?.title || "Product Image"}
                   />
+
                   <button className="absolute m-2 top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
