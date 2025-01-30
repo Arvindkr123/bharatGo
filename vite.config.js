@@ -9,7 +9,7 @@ export default defineConfig({
     tailwindcss()
 
   ],
-  base: "/home",
+  base: "/https://bharat-go-upce.vercel.app/home",
   server: {
     historyApiFallback: true, // Fallback to index.html
   },
