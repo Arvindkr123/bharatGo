@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import useCartContext from "../../hooks/useCartContext";
 
 const MyOrder = () => {
   const { userOrders } = useCartContext();
+  const navigate = useNavigate();
 
   return (
     <div className="grid place-items-center place-content-center">
@@ -58,11 +60,12 @@ const MyOrder = () => {
                 ${order.totalProductPrice}
               </span>
               <svg
+                onClick={() => navigate(`/myOrders/${index}`)}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 aria-hidden="true"
-                className="h-6 w-6 text-black"
+                className="h-6 w-6 text-black cursor-pointer"
               >
                 <path
                   fillRule="evenodd"

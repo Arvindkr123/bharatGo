@@ -15,6 +15,7 @@ import Electronics from "./pages/elctronics/index";
 import Clothes from "./pages/clothes/index";
 import Loader from "./components/Loader";
 import NotFoundPage from "./components/NotFound";
+import SingleOrder from "./pages/myorder/SingleOrder";
 
 function App() {
   return (
@@ -46,6 +47,16 @@ function App() {
             <ProtectRoute>
               <Layout>
                 <MyOrder />
+              </Layout>
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/myOrders/:id"
+          element={
+            <ProtectRoute>
+              <Layout>
+                <SingleOrder />
               </Layout>
             </ProtectRoute>
           }
