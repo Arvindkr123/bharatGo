@@ -42,7 +42,6 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-
       // console.log(response.user);
       setSuccessMessage("Login successful!");
       navigate("/");
@@ -60,6 +59,10 @@ const Login = () => {
         "pawan@gmail.com",
         "pawan@gmail.com"
       );
+      setFormData({
+        email: "pawan@gmail.com",
+        password: "pawan@gmail.com",
+      });
 
       // console.log(response.user);
       setSuccessMessage("Login successful!");
